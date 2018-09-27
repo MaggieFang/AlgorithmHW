@@ -7,20 +7,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class Task1 {
+public class Task2 {
     private static final int HANDLE_CLA = 0;
     private static final int HANDLE_CLS = 1;
     private static final int HANDLE_CLR = 2;
-    private static final String FILE_NAME = "output1.txt";
+    private static final String FILE_NAME = "output2.txt";
+
 
     public static void main(String[] args) throws IOException {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.print("interval time:");
-        int meanNew = in.nextInt();
+        System.out.print("mean interval time:");
+        int meanA = in.nextInt();
 
-        System.out.print("orbiting time:");
+        System.out.print("mean orbiting time:");
         int meanResend = in.nextInt();
 
         System.out.print("service time:");
@@ -52,7 +53,9 @@ public class Task1 {
             switch (nextOperation(cla, cls, clr)) {
                 case HANDLE_CLA:
                     mc = cla;
-                    cla += meanNew;
+                    double r = Math.random();
+                    cla = cla + (int)(-meanA* Math.log(r));  // generate the new next arrival time.
+
                     if (cls == Integer.MAX_VALUE) { // handler the first time.
                         cls = mc + serviceT;
                     }
@@ -72,8 +75,11 @@ public class Task1 {
 
                 case HANDLE_CLR:
                     mc = clr;
+                    r = Math.random();
+                    clr = clr + (int)(-meanResend* Math.log(r));  // generate the new next arrival time.
+
                     if (request >= buffer) {
-                        list.set(0, clr + meanResend);
+                        list.set(0, clr);
                     } else {
                         request++;
                         list.remove(0);
