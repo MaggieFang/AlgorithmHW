@@ -9,8 +9,12 @@ import java.util.Scanner;
  **/
 public class Test {
     private ArrayList<Integer> list = new ArrayList<>();
+
     public static void main(String[] args) {
         Test test = new Test();
+        int[] C = {1, 5, 10, 25, 50};
+
+        //Test P1 a)
         Scanner in = new Scanner(System.in);
         while (true) {
             System.out.print("input n:");
@@ -18,16 +22,37 @@ public class Test {
             if (n == -1) {
                 break;
             }
+            test.list.clear();
             test.changeCoin(n);
-            System.out.print("change series: ");
-            for (int e : test.list) {
-                System.out.print(e + "\t");
-            }
+            System.out.print("change series:" + test.list + ",size = " + test.list.size());
             System.out.println();
+
+            System.out.println("test p e) and verify with a), number = " + test.getChangeCoin(C, n));
         }
+        //Test P1 d
+
     }
+
+    public int getChangeCoin(int[] C, int n) {
+        if (C == null || C.length == 0) {
+            return 0;
+        }
+        if (n <= 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+
+        int i = C.length - 1;
+        while (n < C[i]) {
+            i--;
+        }
+        return 1 + getChangeCoin(C, n - C[i]);
+    }
+
     public void changeCoin(int n) {
-        if (n == 0) {
+        if (n <= 0) {
             return;
         }
         int cur;
