@@ -18,38 +18,43 @@ public class Main {
             C[i++] = scanner.nextInt();
         }
         Arrays.sort(C);
-        int[] memo = new int[v+1];
+
+        int[] memo = new int[v + 1];
+        for (int j = 0; j < memo.length; j++) {
+            memo[j] = -1;
+        }
+
         System.out.println(getChangeCoin(C, v, memo));
     }
 
     public static int getChangeCoin(int[] C, int n, int[] memo) {
-        if (C == null || C.length == 0) {
+        if (memo[n] != -1) {
+            return memo[n];
+        }
+
+        if (n == 0) {
+            memo[0] = 0;
             return 0;
         }
-        if (n < 0) {
-            return 0;
-        }
+
         if (n == 1) {
             memo[n] = 1;
             return 1;
         }
 
+        int result = n;
 
-        for (int i = C.length -1; i >=0 ; i--) {
-            if()
-        }
-
-        if (memo[n] != 0) {
-            return memo[n];
-        } else {
-            int min = Integer.MAX_VALUE;
-            for (int i = 1; i <= n/2; i++) {
-                int tmp = getChangeCoin(C,i,memo) + getChangeCoin(C,n-i,memo);
-                if (min > tmp) {
-                    min = tmp;
+        for (int i = 0; i < C.length; i++) {
+            if (n - C[i] > 0) {
+                int tmp = getChangeCoin(C, n - C[i], memo) +1 ;
+                if (tmp < result) {
+                    result = tmp;
                 }
             }
-           return memo[n] = min;
         }
+        memo[n] = result;
+        return memo[n];
+
     }
+
 }
