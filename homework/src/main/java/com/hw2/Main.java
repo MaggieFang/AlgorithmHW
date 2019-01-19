@@ -17,44 +17,70 @@ public class Main {
         while (i < num) {
             C[i++] = scanner.nextInt();
         }
-        Arrays.sort(C);
+//        Arrays.sort(C);
+//
+//        int[] memo = new int[v + 1];
+//        for (int j = 0; j < memo.length; j++) {
+//            memo[j] = -1;
+//        }
 
-        int[] memo = new int[v + 1];
-        for (int j = 0; j < memo.length; j++) {
-            memo[j] = -1;
-        }
-
-        System.out.println(getChangeCoin(C, v, memo));
+        System.out.println(minCoins(C, v));
     }
 
-    public static int getChangeCoin(int[] C, int n, int[] memo) {
-        if (memo[n] != -1) {
-            return memo[n];
-        }
+    static int minCoins(int coins[], int n)
+    {
 
-        if (n == 0) {
-            memo[0] = 0;
-            return 0;
-        }
+        int memo[] = new int[n + 1];
 
-        if (n == 1) {
-            memo[n] = 1;
-            return 1;
-        }
+        // Base case (If given value V is 0)
+        memo[0] = 0;
 
-        int result = n;
+        // Initialize all memo values as Infinite
+        for (int i = 1; i <= n; i++)
+            memo[i] = Integer.MAX_VALUE;
 
-        for (int i = 0; i < C.length; i++) {
-            if (n - C[i] > 0) {
-                int tmp = getChangeCoin(C, n - C[i], memo) +1 ;
-                if (tmp < result) {
-                    result = tmp;
+        // Compute minimum coins required for all
+        // values from 1 to V
+        for (int i = 1; i <= n; i++)
+        {
+            // Go through all coins smaller than i
+            for (int j = 0; j < coins.length; j++)
+                if (coins[j] <= i)
+                {
+                    int sub_res = memo[i - coins[j]];
+                    if (sub_res != Integer.MAX_VALUE
+                            && sub_res + 1 < memo[i])
+                        memo[i] = sub_res + 1;
                 }
-            }
+
         }
-        memo[n] = result;
         return memo[n];
 
     }
+
+//    public static int getChangeCoin(int[] C, int n, int[] memo) {
+//        if (memo[n] != -1) {
+//            return memo[n];
+//        }
+//
+//        if (n == 1) {
+//            memo[n] = 1;
+//            return 1;
+//        }
+//
+//        int result = n;
+//
+//        for (int i = 0; i < C.length; i++) {
+//            if (n - C[i] > 0) {
+//                int tmp = getChangeCoin(C, n - C[i], memo) +1 ;
+//                if (tmp < result) {
+//                    result = tmp;
+//                }
+//            }
+//        }
+//        memo[n] = result;
+//        return memo[n];
+//
+//    }
 
 }
